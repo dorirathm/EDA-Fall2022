@@ -56,16 +56,16 @@ mean (Sequence1) > median(Sequence1)
 
 ```{r vectors}
 #6
-vector_names <- c('Dori', 'Megan', 'Emma', 'Kallie') #vector with student names
-vector_grades <- c(46,98,97,96) #vector with student grades
-vector_pass <- c(FALSE,TRUE,TRUE,TRUE) #vector of students passing/failing
-
+vector_names <- c('Dori', 'Megan', 'Emma', 'Kallie') #character vector
+vector_grades <- c(46,98,97,96) #numeric vector
+vector_pass <- c(FALSE,TRUE,TRUE,TRUE) #logical vector
+#created vectors for students, their grades, and whether or not they passed
 
 a <- vector_names
 b <- vector_grades
 c <- vector_pass
-
 #assigned each vector a variable a, b, or c.
+
 #7
 dataframegrades <- data.frame(a,b,c) #created a dataframe using variables
 
