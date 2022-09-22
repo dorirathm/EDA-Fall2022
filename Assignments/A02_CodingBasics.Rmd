@@ -32,18 +32,16 @@ This exercise accompanies the lessons in Environmental Data Analytics on coding 
 
 ```{r sequence}
 #1. 
-seq(1,100,4)
-Sequence1 <- seq(1,100,4)
+seq(1,100,4) # Sequence function creates a sequence from 1-100, skips by 4
+Sequence1 <- seq(1,100,4) #assigned the sequence a name
 
-#I used the sequence function to create a sequence from 1 - 100, then by adding a 4 to the third comma the sequence goes up by 4. I then assigned the function to an object 'Sequence 1'
 #2. 
-mean(Sequence1)
-median(Sequence1)
-# I used the 'mean' and 'median' commands to find the average and median of the object 'Sequence1' that I created in the previous step.
-#
+mean(Sequence1) # mean command finds the average of Sequence1
+median(Sequence1) # median command finds the median of Sequence1
+
 #3. 
-mean (Sequence1) > median(Sequence1)
-# I used the 'greater than' tool on the the 'mean' and 'median' commands to determine if the mean was greater than the median. Since they both equal 49, the mean is not greater than the median. 
+mean (Sequence1) > median(Sequence1) 
+# greater than tool compares size of mean and median of Sequence1
 ```
 
 ## Basics Day 2
@@ -58,30 +56,33 @@ mean (Sequence1) > median(Sequence1)
 
 ```{r vectors}
 #6
-vector_names <- c('Dori', 'Megan', 'Emma', 'Kallie')
-vector_grades <- c(46,98,97,96)
-vector_pass <- c(FALSE,TRUE,TRUE,TRUE)
+vector_names <- c('Dori', 'Megan', 'Emma', 'Kallie') #vector with student names
+vector_grades <- c(46,98,97,96) #vector with student grades
+vector_pass <- c(FALSE,TRUE,TRUE,TRUE) #vector of students passing/failing
 
-# for vector_names I created a list of four students, for vector_grades I assigned each student a grade, for vector_pass I determined if the students passed or failed, if their score was under 50 they were assigned 'FALSE' if their score was over 50 they were assigned 'TRUE'
+
 a <- vector_names
 b <- vector_grades
 c <- vector_pass
 
-# I then assigned each vector a variable a, b, or c, to simplify.
+#assigned each vector a variable a, b, or c.
 #7
-dataframegrades <- data.frame(a,b,c)
+dataframegrades <- data.frame(a,b,c) #created a dataframe using variables
 
-# using the data.frame command I plugged each variable into 'dataframegrades'
 #8
-names(dataframegrades) <- c("Student Names","Grade","Pass/Fail"); print(dataframegrades)
-# Using the 'names' command I then assigned each variable previously created to a more descritive name.
+names(dataframegrades) <- c("Student Names","Grade","Pass/Fail") 
+#assigning each column in the dataframe a name
+print(dataframegrades)
+#displaying the dataframe
+
 
 
 ```
 
 9.  QUESTION: How is this data frame different from a matrix?
 
-> Answer: Matrices can only function with one data type, datasets can hold more than one kind of data type. In this dataset we use both numeric and text values.
+> Answer: Matrices can only function with one data type, datasets can hold more
+than one kind of data type. In this dataset we use both numeric and text values.
 
 10. Create a function with an if/else statement. Your function should take a **vector** of test scores and print (not return) whether a given test score is a passing grade of 50 or above (TRUE or FALSE). You will need to choose either the `if` and `else` statements or the `ifelse` statement. 
 
@@ -93,19 +94,21 @@ Passing_grades <- function(x){
     print('TRUE')
   else
     print('FALSE')
-
-  # I assigned the function to the object 'Passing_grades' and used the 'if' statement to say that if x was over 50 the output for that variable would be TRUE, and used the 'else' statement to say that all other values (under 50) would output FALSE.
+#if else statements print TRUE if value is above 50, FALSE if below 50
 }
 Passing_grades2 <- function(x)
   ifelse(x > 50, 'TRUE', 'FALSE')
-# I used the 'ifelse' statement and assigned the test value to evaluate whether or not the values in the vector were greater than 50, if they are greater than 50 the output was set to TRUE, if they are less than 50, the output is set to FALSE.
+#ifelse command tests if x > 50, if yes prints 'TRUE', if no prints 'FALSE'
 
-Passing_grades2(vector_grades)
-#Passing_grades(vector_grades)
+Passing_grades2(vector_grades)#applies Passing_grades2 function to vector_grades
+#Passing_grades(vector_grades) 
+#The if and else statements fail since vector_grades has multiple values
 
-# Passing_grades2, with the ifelse statement worked and was able to evaluate the whole vector, the if and else statements failed since there is more than one value in the vector.
+
 ```
 
 12. QUESTION: Which option of `if` and `else` vs. `ifelse` worked? Why?
 
-> Answer: 'if' and 'else' statements only work for single values, the 'ifelse' statement can evaluate an entire vector to determine if it meets the function criteria.
+> Answer: 'if' and 'else' statements only work for single values, the 'ifelse' 
+statement can evaluate an entire vector to determine if it meets the function 
+criteria.
