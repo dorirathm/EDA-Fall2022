@@ -20,7 +20,7 @@ editor_options:
 #This code chunk will tidy your knit PDF files, wrapping long code lines
 #For it to work, the "formatR" package needs to be installed
 
-#install.packages('formatR')
+install.packages('formatR')
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
 ```
 
@@ -74,8 +74,18 @@ Exercise: build your own scatterplots of PeterPaul.chem.nutrients
 # Plot surface temperatures by day of  year. 
 # Color your points by year, and facet by lake in two rows.
 # Change the ylab name
+PeterPaul.chem.nutrients %>% 
 
+ggplot(subset(PeterPaul.chem.nutrients,depth==0), aes(x=daynum,y=temperature_C))+
+  geom_point(aes(color=year4))+
+  facet_wrap(vars(lakename),nrow = 2)+
+  ylab("Temperature")
 
+# PeterPaul.chem.nutrients$temperature_C <- filter(PeterPaul.chem.nutrients$temperature_C)
+# ggplot()+
+# PeterPaul.chem.nutrients%>%
+#   ggplot()+
+#   geom_point(aes(daynum, temperature_C))
 #2. 
 # Plot temperature by date. Color your points by depth.
 # Change the size of your point to 0.5
@@ -97,7 +107,12 @@ Exercise: Plot relationships between air quality measurements
 # Make the points 50 % transparent
 # Add a line of best fit for the linear regression of these variables.
 
+EPA.ex3<-
+  ggplot(EPAair,aes(x=PM2.5,y=Ozone))+
+  geom_point(aes(color=meanLat),alpha=.5)+
+  geom_smooth(method=lm, color='red')
 
+print(EPA.ex3)
 
 
 ```
@@ -111,8 +126,11 @@ Exercise: Plot distributions of AQI values for EPAair.
 # 4. 
 # Create several types of plots depicting PM2.5, divided by year. 
 # Choose which plot displays the data best and justify your choice. 
-
-
+EPAAIRPLOT<-
+ggplot(EPAair, aes(x=Month, y=PM2.5,color=Year))+
+  geom_point()
+ggplot(EPAair, aes(x=Month, y=PM2.5,color=Year))+
+  geom_violin()
 
 ```
 
