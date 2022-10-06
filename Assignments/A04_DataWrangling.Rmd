@@ -1,6 +1,6 @@
 ---
 title: "Assignment 4: Data Wrangling"
-author: "Student Name"
+author: "Dori Rathmell"
 output: pdf_document
 geometry: margin=2.54cm
 ---
@@ -10,6 +10,7 @@ geometry: margin=2.54cm
 #For it to work, the "formatR" package needs to be installed
 
 #install.packages('formatR')
+library(formatR)
 knitr::opts_chunk$set(tidy.opts=list(width.cutoff=80), tidy=TRUE)
 ```
 
@@ -33,8 +34,32 @@ The completed exercise is due on Friday, Oct7th @ 5:00pm.
 
 ```{r, message = FALSE}
 #1
+getwd()
+library(tidyverse)
+library(lubridate)
+library(dplyr)
+EPA_air_2018 <- read.csv('../Data/Raw/EPAair_O3_NC2018_raw.csv', stringsAsFactors =  TRUE)
+EPA_air_2019 <- read.csv('../Data/Raw/EPAair_O3_NC2019_raw.csv', stringsAsFactors =  TRUE)
+EPA_PM25_2018 <- read.csv('../Data/Raw/EPAair_PM25_NC2018_raw.csv', stringsAsFactors =  TRUE)
+EPA_PM25_2019 <- read.csv('../Data/Raw//EPAair_PM25_NC2019_raw.csv', stringsAsFactors =  TRUE)
 
 #2
+#EPA_air_2018
+dim(EPA_air_2018)
+colnames(EPA_air_2018)
+str(EPA_air_2018)
+#EPA_air_2019
+dim(EPA_air_2019)
+colnames(EPA_air_2019)
+str(EPA_air_2019)
+#EPA_PM25_2018
+dim(EPA_PM25_2018)
+colnames(EPA_PM25_2018)
+str(EPA_PM25_2018)
+#EPA_PM25_2019
+dim(EPA_PM25_2019)
+colnames(EPA_PM25_2019)
+str(EPA_PM25_2019)
 ```
 
 ## Wrangle individual datasets to create processed files.
@@ -45,13 +70,24 @@ The completed exercise is due on Friday, Oct7th @ 5:00pm.
 
 ```{r}
 #3
-
+EPA_air_2018$Date <- as.Date(EPA_air_2018$Date, format = '%m/%d/%Y')
+EPA_air_2019$Date <- as.Date(EPA_air_2019$Date, format = '%m/%d/%$Y')
+EPA_PM25_2018$Date <- as.Date(EPA_PM25_2018$Date, format =  '%m/%d/%Y')
+EPA_PM25_2019$Date <- as.Date(EPA_PM25_2019$Date, format = '%m/%d/%Y')
+class(EPA_air_2018$Date)
 #4
-
+EPA_air_2018.NEW <- select(EPA_air_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC,COUNTY:SITE_LONGITUDE)
+EPA_air_2019.NEW <- select(EPA_air_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC,COUNTY:SITE_LONGITUDE)
+EPA_PM25_2018.NEW <- select(EPA_PM25_2018, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC,COUNTY:SITE_LONGITUDE)
+EPA_PM25_2019.NEW <- select(EPA_PM25_2019, Date, DAILY_AQI_VALUE, Site.Name, AQS_PARAMETER_DESC,COUNTY:SITE_LONGITUDE)
 #5
-
+EPA_PM25_2018$AQS_PARAMETER_DESC<-'2.5'
+EPA_PM25_2019$AQS_PARAMETER_DESC<-'2.5'
 #6
-
+write.csv(EPA_air_2018, row.names = FALSE, file = "../Data/Processed/EPAair_O3_NC2018_processed.csv")
+write.csv(EPA_air_2019, row.names = FALSE, file = "../Data/Processed/EPAair_O3_NC2019_processed.csv")
+write.csv(EPA_PM25_2018, row.names = FALSE, file = "../Data/Processed/EPAair_PM25_NC2018_processed.csv")
+write.csv(EPA_PM25_2019, row.names = FALSE, file = "../Data/Processed/EPAair_PM25_NC2019_processed.csv")
 ```
 
 
@@ -70,8 +106,16 @@ The completed exercise is due on Friday, Oct7th @ 5:00pm.
 
 ```{r}
 #7
-
+ALL_EPA_COMBINED <- rbind(EPA_air_2018.NEW, EPA_air_2019.NEW, EPA_PM25_2018.NEW, EPA_PM25_2019.NEW)
 #8
+ALL_EPA_COMBINED.filtered <- 
+  ALL_EPA_COMBINED %>%
+  filter(Site.Name == "Linville Falls" | Site.Name == "Durham Armory" | Site.Name == "Leggett"| Site.Name == "Hattie Avenue" | Site.Name == "Clemmons Middle" | Site.Name == "Mendenhall School" | Site.Name == "Frying Pan Mountain" | Site.Name == "West Johnston Co." | Site.Name == "Garinger High School" | Site.Name == "Castle Hayne" | Site.Name == "Pitt Agri. Center" | Site.Name == "Bryson City" | Site.Name == "Millbrook School") %>%
+  group_by(Date, Site.name, AQS_PARAMETER_DESC, SITE_LATITUDE, SITE_LONGITUDE) %>%
+  summarise(meanAQI = mean(DAILY_AQI_VALUE),
+            meanLAT = mean(SITE_LATITUDE), 
+            meanLONG = mean(SITE_LONGITUDE))
+
 
 #9
 
