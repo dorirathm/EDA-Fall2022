@@ -141,6 +141,7 @@ Selecting allows us to choose certain columns (variables) in our dataset.
 
 ```{r}
 NTL.phys.data.temps <- select(NTL.phys.data, lakename, sampledate:temperature_C)
+EPA_air_2018.NEW <- select(EPA_air_2018, )
 
 ```
 ### Mutate
