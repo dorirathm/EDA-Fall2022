@@ -1,8 +1,10 @@
 ---
 title: "Assignment 5: Data Visualization"
-author: "Student Name"
+author: "Dori Rathmell"
 output: pdf_document
 geometry: margin=2.54cm
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -40,15 +42,40 @@ the processed data file for the Niwot Ridge litter dataset (use the
 
 ```{r}
 #1 
-
+getwd()
+library(tidyverse)
+library(lubridate)
+#install.packages(cowplot)
+library(cowplot)
+Litter_Mass_data <- read.csv('../Data/Processed/NEON_NIWO_Litter_mass_trap_Processed.csv', 
+           stringsAsFactors = TRUE)
+Chem_nutrients <- 
+  read.csv('../Data/Processed/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv', stringsAsFactors = TRUE)
+#opening and naming datasets 
 #2 
-
+class(Litter_Mass_data$collectdate)
+class(Chem_nutrients$sampledate)
+#checking the initial class of date columns in both datasets
+Litter_Mass_data$collectDate <- 
+  as.Date(Litter_Mass_data$collectDate, format = '%Y-%m-%d')
+Chem_nutrients$sampledate <- 
+  as.Date(Chem_nutrients$sampledate, format = '%Y-%m-%d')
+#reclassifying them as "date" classes
+class(Litter_Mass_data$collectDate)
+class(Chem_nutrients$sampledate)
+#double checking that they are now in the "date" class
 ```
 ## Define your theme
 3. Build a theme and set it as your default theme.
 
 ```{r}
 #3
+plot_theme <- theme_gray(base_size = 12) +
+  theme(axis.text = element_text(color = "Gray"), 
+        legend.position = "right")
+theme_set(plot_theme)
+#setting my default theme to the gray theme 
+
 
 ```
 
@@ -64,7 +91,16 @@ limits using `xlim()` and/or `ylim()`).
 
 ```{r}
 #4
-
+plot1 <- ggplot(Chem_nutrients, aes(y = po4, x = tp_ug)) +
+  geom_point(aes(color = lakename))+
+  ylim(0, 50)+
+  plot_theme+
+  geom_smooth(method=lm, se=FALSE, color = 'black')+
+  xlab('Phosphate')+
+  ylab('Phosphorus')
+#making my first scatter plot, setting the colors and theme + line of best fit
+print(plot1)
+#displaying scatter plot
 ```
 
 
@@ -78,13 +114,62 @@ see <https://r-lang.com/month-abb-in-r-with-example>
 
 ```{r}
 #5
+#a
+boxplot1 <- 
+  ggplot(Chem_nutrients, aes(x = factor(month, levels=c(1:12)), y = temperature_C)) +
+  geom_boxplot(aes(color = lakename))+
+  plot_theme +
+  ylab('Temperature')+
+  xlab('Month')+
+  scale_x_discrete(labels=month.abb[],drop=F) #converting months from numbers to names
+#making the first boxplot
+print(boxplot1)
+#displaying the first boxplot
+#b
+boxplot2 <-
+  ggplot(Chem_nutrients, aes(x = factor(month, levels=c(1:12)), y = tp_ug)) +
+  geom_boxplot(aes(color = lakename))+
+  plot_theme+
+  ylab('Phosphorus')+
+  xlab('Month')+
+  scale_x_discrete(labels=month.abb[],drop=F)
+#making the second box plot
+print(boxplot2)
+#displaying the second box plot
+
+#c
+boxplot3 <-
+  ggplot(Chem_nutrients, aes(x = factor(month, levels=c(1:12)), y = tn_ug)) +
+  geom_boxplot(aes(color = lakename))+
+  plot_theme+
+  xlab('Month')+
+  ylab('Nitrogen')+
+  scale_x_discrete(labels=month.abb[],drop=F)
+#making the third box plot
+print(boxplot3)
+#displaying the third box plot
+
+#d
+
+library(cowplot)
+cowplot1 <- plot_grid(
+  boxplot1 + theme(legend.position="none", axis.title.x = element_blank()),
+  boxplot2 + theme(legend.position="none", axis.title.x = element_blank()),
+  boxplot3 + theme(legend.position='bottom'), #making only one legend present
+  align = 'vh',
+  ncol = 1,nrow = 3, rel_heights = c(1.5, 1.5, 2)#setting the heights and rows
+  #combining all the box plots into one cow plot
+)
+print(cowplot1)
+#displaying cowplot
 
 ```
 
 Question: What do you observe about the variables of interest over seasons 
 and between lakes? 
 
-> Answer: 
+> Answer: While temperature is consistent between the two lakes, Peter Lake 
+has a higher Nitrogen and Phosphorus content throughout the year.
 
 6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the 
 "Needles" functional group. Plot the dry mass of needle litter by date and 
@@ -96,11 +181,34 @@ three facets rather than separated by color.
 
 ```{r}
 #6
+Litter_Mass_dataNEW <-
+  Litter_Mass_data %>% 
+  filter(functionalGroup == 'Needles') %>% 
+  group_by(dryMass, collectDate, nlcdClass)
+#filtering and grouping the data needed for the plot
 
+litter_plot1 <-
+  ggplot(Litter_Mass_dataNEW, aes(x= collectDate, y = dryMass))+
+  geom_point(aes(color = nlcdClass))+
+  xlab('Date')+
+  ylab('Mass of Leaf Litter')+
+  plot_theme
+print(litter_plot1)
+#creating the plot grouped by color 
 #7
 
-
+litter_plot2 <-
+  ggplot(Litter_Mass_dataNEW, aes(x = collectDate, y = dryMass)) +
+  geom_point(size = 1) +
+  plot_theme+
+  facet_wrap(vars(nlcdClass), nrow = 3)+
+  xlab('Year')+
+  ylab('Drymass')
+print(litter_plot2)
+#creating the plot separated by category
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer:
+> Answer: I think plot number 7 is more effective, having the dry mass already 
+separated by category even without color is more clear than plot 6 where the 
+mass is separated by color but all stacked on top of eachother.
