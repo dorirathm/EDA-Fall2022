@@ -46,6 +46,9 @@ Create three plots, each with appropriately formatted axes and legends. Choose a
 
 ```{r}
 #Exercise 1:
+ggplot(EPAair, aes(x=Ozone, fill = as.factor(Year)))+
+  geom_density(alpha)
+
 
 
 ```
