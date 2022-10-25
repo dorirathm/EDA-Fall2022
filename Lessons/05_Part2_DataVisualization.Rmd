@@ -213,7 +213,7 @@ A useful guide for aligning plots by axis can be found here: https://wilkelab.or
 ```{r, fig.height = 7, fig.width = 6}
 #install.packages("cowplot")
 library(cowplot)
-plot_grid(NvsP2, Nutrientplot, nrow = 2, align = 'h', rel_heights = c(1.25, 1))
+plot_grid(NvsP2, Nutrientplot, nrow = 2, align = 'vh', rel_heights = c(1.25, 1))
 
 ```
 
