@@ -62,11 +62,16 @@ For the NTL-LTER dataset, can we predict PM2.5 from Ozone?
 ```{r}
 
 #Exercise 2: Run a linear regression PM2.5 by Ozone. Find the p-value and R-squared value. 
-
+PM2.5byOzone.regression <-lm(data = EPAair, PM2.5 ~ Ozone)
+summary(PM2.5byOzone.regression)
 
 
 #Exercise 3: Build a scatterplot. Add a line and standard error for the linear regression. Add the regression equation to the plot
-
+PM2.5byOzone.regression<-
+  ggplot(EPAair, aes(x = Ozone, y = PM2.5))+
+  geom_point()+
+  geom_smooth(method = 'lm', col = 'blue')
+print(PM2.5byOzone.regression)
 
 
 ```
@@ -79,12 +84,21 @@ What other variables can we add to improve model?
 ```{r}
 
 #Exercise 4: Build correlation plots and identify more possible explanatory variables to add to the regression.
-
+library(dplyr)
+library(corrplot)
+EPAair.subset <-
+  EPAair %>% 
+  select(meanLat:Ozone) %>% 
+  na.omit()
+EPAairCorr <- cor(EPAair.subset)
+corrplot(EPAairCorr,method = 'ellipse')
+corrplot.mixed(EPAairCorr, upper = 'ellipse')
 
 
 
 #Exercise 5: Choose a model by AIC in a Stepwise Algorithm. Do the results from AIC match the variables you selected on Exercise 5?
 
+Ozonebyall.regression <-
 
 
 
