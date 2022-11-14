@@ -224,7 +224,7 @@ scrape.it <- function(the_year){
   #Get the proper url
   the_url <- ifelse(the_year==2021,
                     'https://www.eia.gov/electricity/state/',
-                    paste0('https://www.eia.gov/electricity/state/archive',the_year,'/'))
+                    paste0('https://www.eia.gov/electricity/state/archive/',the_year,'/'))
 
   #Fetch the website
   #<enter code from above here> 
