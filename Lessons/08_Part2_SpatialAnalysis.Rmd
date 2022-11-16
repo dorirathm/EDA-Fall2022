@@ -326,7 +326,7 @@ On top of projecting any geographic data to adjust for the limitations of the so
 
 ```{r Transform the datasets to other coordinate reference systems}
 #Convert all to UTM Zone 17 (crs = 26917)
-epa_sf_utm <-      st_transform(epa_pm25_sites_sf, crs = 26917)
+epa_sf_utml <-      st_transform(epa_pm25_sites_sf, crs = 26917)
 counties_sf_utm <- st_transform(counties_sf, crs = 26917)
 state_sf_utm <-    st_transform(state_sf,crs = 26917)
 huc8_sf_utm <-     st_transform(huc8_sf, crs = 26917)
